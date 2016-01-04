@@ -99,20 +99,9 @@ function insertStudent(conn, student) {
     var rs = stmt.getGeneratedKeys();
   } catch(e) {
     stmt.close();
-    stmt = conn.prepareStatement(
-      "update STUDENT set (name, surname, gender, birthdate, nacionality, phone, studies, faculty) " +
-      "values (?, ?, ?, ?, (select country_code from COUNTRY where country_name = ?), ?, (select id from STUDIES where name = ?), (select id from FACULTY where name = ?)) " + 
-      "where email = ?", 1)
-    stmt.setString(1, student.name);
-    stmt.setString(2, student.surname);
-    stmt.setBoolean(3, student.gender == "Hombre / Male");
-    stmt.setDate(4, Jdbc.parseDate(student.birthdate));
-    stmt.setString(5, student.nacionality);
-    stmt.setString(6, student.phone);
-    stmt.setString(7, student.studies);
-    stmt.setString(8, student.faculty);
-    stmt.executeUpdate();
-    var rs = stmt.getGeneratedKeys();
+    stmt = conn.prepareStatement("select id from STUDENT where email = ?");
+    stmt.setString(1, student.email);
+    var rs = stmt.executeQuery();
   }
   var id = -1;
   if(rs.next()) {
@@ -135,7 +124,11 @@ function insertErasmus(conn, erasmus) {
     stmt.setBoolean(3, erasmus.gender_preference == "Hombre / Male");
   }
   // TODO: usar JdbcTime
-  stmt.setString(4, erasmus.arrival_date);
+  if (erasmus.arrival_date.equals("0000-00-00 00:00:00") || erasmus.arrival_date.equals("")) {
+      stmt.setNull(4, 0);
+  } else {
+      stmt.setString(4, erasmus.arrival_date);
+  }
   stmt.setString(5, erasmus.notes);
   try {
     stmt.executeUpdate();

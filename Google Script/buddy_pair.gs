@@ -95,7 +95,7 @@ function getUnnotifiedPeersInfo(conn) {
 function notifyErasmus(conn, unnotified) {
   var SUBJECT = "AEGEE-Zaragoza - Buddy Pair";
   var OPTIONS = {
-    from: "erasmus-noreply@aegee-zaragoza.org",
+    from: "erasmus@aegee-zaragoza.org",
     replyTo: "erasmus@aegee-zaragoza.org"
   };
   var notified = [];
@@ -160,7 +160,7 @@ function notifyPeers(conn, unnotified) {
       "C/Corona de Aragón 42 (Casa del Estudiante)\n" +
       "Email: erasmus@aegee-zaragoza.org";
   var OPTIONS = {
-    from: "erasmus-noreply@aegee-zaragoza.org",
+    from: "erasmus@aegee-zaragoza.org",
     replyTo: "erasmus@aegee-zaragoza.org"
   };
   var notified = [];
