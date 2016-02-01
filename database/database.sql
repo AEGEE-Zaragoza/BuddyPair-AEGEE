@@ -56,6 +56,7 @@ create table ERASMUS (
 		on delete cascade
 );
 
+-- TODO: add NIP (optional)
 create table PEER (
 	id int auto_increment primary key,
 	register_date timestamp default current_timestamp,
