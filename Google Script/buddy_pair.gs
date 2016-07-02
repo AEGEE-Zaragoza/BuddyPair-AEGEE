@@ -202,9 +202,6 @@ function notifyPeers(conn, unnotified) {
 }
 
 function emparejar() {
-  var stmt = connection.prepareCall("call emparejar()");
-  stmt.execute();
-  stmt.close();
   var unnotified = getUnnotifiedErasmusInfo(connection);
   notifyErasmus(connection, unnotified);
   unnotified = getUnnotifiedPeersInfo(connection);

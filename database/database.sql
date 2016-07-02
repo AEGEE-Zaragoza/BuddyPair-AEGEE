@@ -36,6 +36,7 @@ create table STUDENT (
 	gender boolean not null,
 	birthdate date not null,
 	nacionality varchar(2) not null,
+	aegee_member boolean not null default FALSE,
 	email varchar(128) unique not null,
 	phone varchar(16),
 	studies int,
