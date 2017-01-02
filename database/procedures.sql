@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS emparejar;
 
 DELIMITER $$
 CREATE PROCEDURE emparejar_estudiantes(IN erasmus INT, IN peer INT) BEGIN
-	INSERT INTO BUDDY_PAIR(erasmus, peer) values (erasmus, peer);
+	INSERT INTO BUDDY_PAIR(erasmus, peer) VALUES (erasmus, peer);
 END $$
 
 -- Procedimiento que empareja todos los estudiantes Erasmus posibles con sus respectivos tutores.
@@ -35,7 +35,7 @@ CREATE PROCEDURE emparejar() BEGIN
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET _done_erasmus := TRUE;
 
 	DROP TABLE IF EXISTS PESOS;
-	CREATE TEMPORARY TABLE PESOS(peso int default 0) 
+	CREATE TEMPORARY TABLE PESOS(peso INT DEFAULT 0) 
 		SELECT id AS peer_id, (SELECT COUNT(*) FROM BUDDY_PAIR WHERE peer = peer_id) AS erasmus_asignados FROM PEER WHERE (
 			SELECT COUNT(*) 
 			FROM BUDDY_PAIR 
