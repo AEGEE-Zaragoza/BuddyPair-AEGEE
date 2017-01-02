@@ -27,12 +27,12 @@ create table STUDENT (
 	surname varchar(256) not null,
 	gender boolean not null,
 	birthdate date not null,
-	nacionality varchar(2) not null,
+	nationality varchar(2) not null,
 	email varchar(128) unique not null,
 	phone varchar(16),
 	studies int,
 	faculty int,
-	foreign key (nacionality) references COUNTRY(country_code),
+	foreign key (nationality) references COUNTRY(country_code),
 	foreign key (studies) references STUDIES(id),
 	foreign key (faculty) references FACULTY(id)
 );
