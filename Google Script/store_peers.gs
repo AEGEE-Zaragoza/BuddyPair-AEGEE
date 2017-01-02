@@ -4,7 +4,7 @@ var NAME_ID = 1132475089;
 var SURNAME_ID = 767531521;
 var GENDER_ID = 492717918;
 var BIRTHDATE_ID = 967307718;
-var NACIONALITY_ID = 1571810382;
+var NATIONALITY_ID = 1571810382;
 var EMAIL_ID = 319937563;
 var PHONE_ID = 1343285556;
 var STUDIES_ID = 488634952;
@@ -24,14 +24,14 @@ function dumpResponse(response, form) {
     surname: response.getResponseForItem(form.getItemById(SURNAME_ID)).getResponse(),
     gender: response.getResponseForItem(form.getItemById(GENDER_ID)).getResponse() == "Hombre" ? true : false,
     birthdate: response.getResponseForItem(form.getItemById(BIRTHDATE_ID)).getResponse(),
-    nacionality_name: response.getResponseForItem(form.getItemById(NACIONALITY_ID)).getResponse(),
+    nationality_name: response.getResponseForItem(form.getItemById(NATIONALITY_ID)).getResponse(),
     email: response.getResponseForItem(form.getItemById(EMAIL_ID)).getResponse(),
     phone: response.getResponseForItem(form.getItemById(PHONE_ID)) != null ? response.getResponseForItem(form.getItemById(PHONE_ID)).getResponse() : null,
     studies_name: response.getResponseForItem(form.getItemById(STUDIES_ID)) != null ? response.getResponseForItem(form.getItemById(STUDIES_ID)).getResponse() : null,
     faculty_name: response.getResponseForItem(form.getItemById(FACULTY_ID)) != null ? response.getResponseForItem(form.getItemById(FACULTY_ID)).getResponse() : null,
     register_date: Utilities.formatDate(response.getTimestamp(), 'GMT', 'yyyy-MM-dd HH:mm:ss'),
     gender_preference: response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Hombre" ? true : response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Mujer" ? false : null,
-    nationality_preference: response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)) != null ? response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)).getResponse() : null,
+    nationality_preference_name: response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)) != null ? response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)).getResponse() : null,
     erasmus_limit: response.getResponseForItem(form.getItemById(ERASMUS_LIMIT_ID)).getResponse(),
     notes: response.getResponseForItem(form.getItemById(NOTES_ID)).getResponse(),
     aegee_member: response.getResponseForItem(form.getItemById(MEMBER_ID)).getResponse() == "Sí" ? true : false,
