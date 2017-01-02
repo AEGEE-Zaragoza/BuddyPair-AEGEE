@@ -28,7 +28,7 @@ function dumpResponse(response, form) {
     faculty_name: response.getResponseForItem(form.getItemById(FACULTY_ID)) != null ? response.getResponseForItem(form.getItemById(FACULTY_ID)).getResponse() : null,
     register_date: Utilities.formatDate(response.getTimestamp(), 'GMT', 'yyyy-MM-dd HH:mm:ss'),
     gender_preference: response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Hombre / Male" ? true : response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Mujer / Female" ? false : null,
-    language_preference: response.getResponseForItem(form.getItemById(LANGUAGE_PREF_ID)).getResponse(),
+    language_preference: response.getResponseForItem(form.getItemById(LANGUAGE_PREF_ID)) == null ? null : response.getResponseForItem(form.getItemById(LANGUAGE_PREF_ID)).getResponse() == "Español / Spanish" ? true : false,
     arrival_date: response.getResponseForItem(form.getItemById(ARRIVAL_DATE_ID)).getResponse(),
     notes: response.getResponseForItem(form.getItemById(NOTES_ID)).getResponse(),
     notifications: response.getResponseForItem(form.getItemById(NOTIFICATIONS_ID)).getResponse() == "Sí / Yes" ? true : false
