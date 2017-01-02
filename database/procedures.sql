@@ -27,8 +27,6 @@ CREATE PROCEDURE emparejar() BEGIN
 		FROM ERASMUS 
 		INNER JOIN STUDENT 
 		ON ERASMUS.erasmus = STUDENT.id 
-		--LEFT JOIN ERASMUS_LANGUAGE_PREFERENCE 
-		--ON ERASMUS.id = ERASMUS_LANGUAGE_PREFERENCE.erasmus 
 		WHERE NOT EXISTS (
 			SELECT * 
 			FROM BUDDY_PAIR 
@@ -58,8 +56,6 @@ CREATE PROCEDURE emparejar() BEGIN
 				ON PESOS.peer_id = PEER.id
 				INNER JOIN STUDENT 
 				ON PEER.peer = STUDENT.id 
-				--LEFT JOIN PEER_LANGUAGE_PREFERENCE 
-				--ON PEER.id = PEER_LANGUAGE_PREFERENCE.peer 
 				WHERE PESOS.erasmus_asignados = _min_erasmus_asignados AND PESOS.erasmus_asignados < PEER.erasmus_limit
 				ORDER BY PEER.register_date ASC;
 			DECLARE CONTINUE HANDLER FOR NOT FOUND SET _done_peers := TRUE;
