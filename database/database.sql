@@ -40,6 +40,7 @@ create table STUDENT (
 
 create table ERASMUS (
     id int auto_increment primary key,
+    course_year int not null,
     register_date timestamp default current_timestamp,
     erasmus int unique not null,
     -- TRUE: male; FALSE: female; NULL: no preference
@@ -54,6 +55,7 @@ create table ERASMUS (
 
 create table PEER (
     id int auto_increment primary key,
+    course_year int not null,
     register_date timestamp default current_timestamp,
     peer int unique not null,
     -- TRUE: male; FALSE: female; NULL: no preference
