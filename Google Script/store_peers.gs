@@ -1,3 +1,5 @@
+var CURRENT_COURSE_YEAR = 2017;
+
 var API_SERVER = "https://buddypair.aegee-zaragoza.org";
 
 var NAME_ID = 1132475089;
@@ -29,6 +31,7 @@ function dumpResponse(response, form) {
     phone: response.getResponseForItem(form.getItemById(PHONE_ID)) != null ? response.getResponseForItem(form.getItemById(PHONE_ID)).getResponse() : null,
     studies_name: response.getResponseForItem(form.getItemById(STUDIES_ID)) != null ? response.getResponseForItem(form.getItemById(STUDIES_ID)).getResponse() : null,
     faculty_name: response.getResponseForItem(form.getItemById(FACULTY_ID)) != null ? response.getResponseForItem(form.getItemById(FACULTY_ID)).getResponse() : null,
+    course_year: CURRENT_COURSE_YEAR,
     register_date: Utilities.formatDate(response.getTimestamp(), 'GMT', 'yyyy-MM-dd HH:mm:ss'),
     gender_preference: response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Hombre" ? true : response.getResponseForItem(form.getItemById(GENDER_PREF_ID)).getResponse() == "Mujer" ? false : null,
     nationality_preference_name: response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)) != null ? response.getResponseForItem(form.getItemById(NATIONALITY_PREF_ID)).getResponse() : null,

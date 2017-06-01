@@ -1,3 +1,5 @@
+var CURRENT_COURSE_YEAR = 2017;
+
 var HOST = "aegee-zaragoza.org";
 var PORT = 3306;
 var DB = "buddy_pair";
@@ -26,7 +28,7 @@ function getUnnotifiedErasmusInfo(conn) {
     "inner join STUDENT as peer on PEER.peer = peer.id " +
     "left join STUDIES on peer.studies = STUDIES.id " +
     "left join FACULTY on peer.faculty = FACULTY.id " +
-    "where not BUDDY_PAIR.notified_erasmus");
+    "where ERASMUS.course_year = " + CURRENT_COURSE_YEAR + " and not BUDDY_PAIR.notified_erasmus");
   var rs = stmt.executeQuery();
   var res = [];
   var i = 0;
@@ -64,7 +66,7 @@ function getUnnotifiedPeersInfo(conn) {
     "inner join COUNTRY on erasmus.nacionality = COUNTRY.country_code " +
     "left join STUDIES on erasmus.studies = STUDIES.id " +
     "left join FACULTY on erasmus.faculty = FACULTY.id " +
-    "where not BUDDY_PAIR.notified_peer");
+    "where PEER.course_year = " + CURRENT_COURSE_YEAR + " and not BUDDY_PAIR.notified_peer");
   var rs = stmt.executeQuery();
   var res = [];
   var i = 0;
