@@ -21,6 +21,15 @@ create table FACULTY (
     name varchar(64) unique not null
 );
 
+create table SEMESTER (
+    id int primary key,
+    year int not null,
+    num_semester int not null,
+    start_date date not null,
+    end_date date not null,
+    name varchar(128) not null
+);
+
 create table STUDENT (
     id int auto_increment primary key,
     name varchar(128) not null,
@@ -40,7 +49,7 @@ create table STUDENT (
 
 create table ERASMUS (
     id int auto_increment primary key,
-    course_year int not null,
+    semester_id int not null,
     register_date timestamp default current_timestamp,
     erasmus int unique not null,
     -- TRUE: male; FALSE: female; NULL: no preference
@@ -49,13 +58,14 @@ create table ERASMUS (
     language_preference boolean,
     arrival_date datetime,
     notes varchar(1024),
+    foreign key (semester_id) references SEMESTER(id),
     foreign key (erasmus) references STUDENT(id)
         on delete cascade
 );
 
 create table PEER (
     id int auto_increment primary key,
-    course_year int not null,
+    semester_id int not null,
     register_date timestamp default current_timestamp,
     peer int unique not null,
     -- TRUE: male; FALSE: female; NULL: no preference
@@ -67,6 +77,7 @@ create table PEER (
     aegee_member boolean not null default FALSE,
     nia varchar(6),
     speaks_english boolean not null default FALSE,
+    foreign key (semester_id) references SEMESTER(id),
     foreign key (peer) references STUDENT(id)
         on delete cascade,
     foreign key (nationality_preference) references COUNTRY(country_code)

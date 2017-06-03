@@ -17,7 +17,7 @@ END $$
 -- * Miembro de AEGEE                                1 punto
 -- Se da preferencia después de aplicar estos criterios a los estudiantes que se hayan apuntado antes.
 -- Se da preferencia antes de aplicar estos criterios a los tutores que menos estudiantes Erasmus asignados tienen
-CREATE PROCEDURE emparejar(IN _course_year INT) BEGIN
+CREATE PROCEDURE emparejar(IN _semester_id INT) BEGIN
     DECLARE _done_erasmus, _done_peers BOOLEAN DEFAULT FALSE;
     DECLARE _erasmus_id, _erasmus_student_id, _erasmus_studies, _erasmus_faculty INT;
     DECLARE _erasmus_gender_preference, _erasmus_gender, _erasmus_language_preference BOOLEAN;
@@ -31,7 +31,7 @@ CREATE PROCEDURE emparejar(IN _course_year INT) BEGIN
         FROM ERASMUS 
         INNER JOIN STUDENT 
         ON ERASMUS.erasmus = STUDENT.id 
-        WHERE course_year = _course_year AND NOT EXISTS (
+        WHERE semester_id = _semester_id AND NOT EXISTS (
             SELECT * 
             FROM BUDDY_PAIR 
             WHERE erasmus = ERASMUS.id) 
@@ -42,7 +42,7 @@ CREATE PROCEDURE emparejar(IN _course_year INT) BEGIN
     CREATE TEMPORARY TABLE PESOS(peso INT DEFAULT 0) 
         SELECT id AS peer_id, (SELECT COUNT(*) FROM BUDDY_PAIR WHERE peer = peer_id) AS erasmus_asignados 
         FROM PEER 
-        WHERE course_year = _course_year AND (
+        WHERE semester_id = _semester_id AND (
             SELECT COUNT(*) 
             FROM BUDDY_PAIR 
             WHERE peer = PEER.id) < PEER.erasmus_limit;
