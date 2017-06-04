@@ -5,6 +5,7 @@ drop table if exists STUDENT;
 drop table if exists FACULTY;
 drop table if exists STUDIES;
 drop table if exists COUNTRY;
+drop table if exists SEMESTER;
 
 create table COUNTRY (
     country_code varchar(2) primary key,
@@ -51,7 +52,7 @@ create table ERASMUS (
     id int auto_increment primary key,
     semester_id int not null,
     register_date timestamp default current_timestamp,
-    erasmus int unique not null,
+    erasmus int not null,
     -- TRUE: male; FALSE: female; NULL: no preference
     gender_preference boolean,
     -- TRUE: Spanish; FALSE: English; NULL: no preference
@@ -67,7 +68,7 @@ create table PEER (
     id int auto_increment primary key,
     semester_id int not null,
     register_date timestamp default current_timestamp,
-    peer int unique not null,
+    peer int not null,
     -- TRUE: male; FALSE: female; NULL: no preference
     gender_preference boolean,
     -- 'XX': country; NULL: no preference

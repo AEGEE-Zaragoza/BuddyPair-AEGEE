@@ -272,3 +272,11 @@ insert into FACULTY (name) values
     ('Campus de La Almunia'),
     ('Other'),
     ('Unknown');
+
+insert into SEMESTER (id, year, num_semester, start_date, end_date, name) values
+    (201401, 2014, 1, '2014-09-01', '2015-01-31', 'First semester course 2014/2015'),
+    (201402, 2014, 2, '2015-02-01', '2015-06-30', 'Second semester course 2014/2015'),
+    (201501, 2015, 1, '2015-09-01', '2016-01-31', 'First semester course 2015/2016'),
+    (201502, 2015, 2, '2016-02-01', '2016-06-30', 'Second semester course 2015/2016'),
+    (201601, 2016, 1, '2016-09-01', '2017-01-31', 'First semester course 2016/2017'),
+    (201602, 2016, 2, '2017-02-01', '2017-06-30', 'Second semester course 2016/2017');
