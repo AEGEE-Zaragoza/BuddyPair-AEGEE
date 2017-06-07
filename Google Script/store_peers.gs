@@ -1,6 +1,7 @@
 var CURRENT_SEMESTER_ID = 201701;
 
 var API_SERVER = "https://buddypair.aegee-zaragoza.org";
+var API_AUTH_TOKEN = "";
 
 var NAME_ID = 1132475089;
 var SURNAME_ID = 767531521;
@@ -45,7 +46,10 @@ function dumpResponse(response, form) {
   var options = {
     method: 'post',
     contentType: 'application/json',
-    payload: JSON.stringify({ peer: peer })
+    payload: JSON.stringify({ peer: peer }),
+    headers: {
+      'Authorization': API_AUTH_TOKEN
+    }
   };
   UrlFetchApp.fetch(API_SERVER + "/api/peers", options);
 }
