@@ -42,7 +42,7 @@ function dumpResponse(response, form) {
     contentType: 'application/json',
     payload: JSON.stringify({ erasmus: erasmus }),
     headers: {
-      'Authorization': API_AUTH_TOKEN
+      'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
     }
   };
   UrlFetchApp.fetch(API_SERVER + "/api/erasmuses", options);

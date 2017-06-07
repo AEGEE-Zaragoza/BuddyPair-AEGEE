@@ -1,100 +1,29 @@
-var CURRENT_COURSE_YEAR = 2017;
+var CURRENT_SEMESTER_ID = 201701;
 
-var HOST = "aegee-zaragoza.org";
-var PORT = 3306;
-var DB = "buddy_pair";
-var USERNAME = "";
-var PASSWORD = "";
-var connection = Jdbc.getConnection("jdbc:mysql://" + HOST + ":" + PORT + "/" + DB, USERNAME, PASSWORD);
+var API_SERVER = "https://buddypair.aegee-zaragoza.org";
+var API_AUTH_TOKEN = "";
 
-// TODO: implementar como aplicación web
-
-function doGet() {
-  // NOTA: el script solo se puede ejecutar por los usuarios que tengan permisos de 
-  // lectura o edición sobre el fichero.
-  // Se debe ejecutar con itaegee@gmail.com como propietario para poder mandar correos correctamente.
-  return HtmlService.createTemplateFromFile("index").evaluate();
+function getUnnotifiedErasmusInfo() {
+  var options = {
+    headers: {
+      'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
+    }
+  };
+  var response = UrlFetchApp.fetch(API_SERVER + "/api/erasmuses/" + CURRENT_SEMESTER_ID + "/unnotified", options);
+  return JSON.parse(response);
 }
 
-function getUnnotifiedErasmusInfo(conn) {
-  var stmt = conn.prepareStatement(
-    "select ERASMUS.id as erasmus_id, erasmus.email as erasmus_email, erasmus.name as erasmus_name, erasmus.surname as erasmus_surname, " +
-        "peer.name as peer_name, peer.surname as peer_surname, peer.email as peer_email, STUDIES.name as peer_studies, " +
-        "FACULTY.name as peer_faculty, PEER.notes as peer_notes " +
-    "from ERASMUS " +
-    "inner join STUDENT as erasmus on ERASMUS.erasmus = erasmus.id " +
-    "inner join BUDDY_PAIR on ERASMUS.id = BUDDY_PAIR.erasmus " +
-    "inner join PEER on BUDDY_PAIR.peer = PEER.id " +
-    "inner join STUDENT as peer on PEER.peer = peer.id " +
-    "left join STUDIES on peer.studies = STUDIES.id " +
-    "left join FACULTY on peer.faculty = FACULTY.id " +
-    "where ERASMUS.course_year = " + CURRENT_COURSE_YEAR + " and not BUDDY_PAIR.notified_erasmus");
-  var rs = stmt.executeQuery();
-  var res = [];
-  var i = 0;
-  while(rs.next()) {
-    var info_erasmus = {
-      erasmus_id: rs.getInt("erasmus_id"),
-      erasmus_email: rs.getString("erasmus_email"),
-      erasmus_name: rs.getString("erasmus_name"),
-      erasmus_surname: rs.getString("erasmus_surname"),
-      peer_name: rs.getString("peer_name"),
-      peer_surname: rs.getString("peer_surname"),
-      peer_email: rs.getString("peer_email"),
-      peer_studies: rs.getString("peer_studies") != null ? rs.getString("peer_studies") : "-",
-      peer_faculty: rs.getString("peer_faculty") != null ? rs.getString("peer_faculty") : "-",
-      peer_notes: rs.getString("peer_notes") != null ? rs.getString("peer_notes") : "_"
-    };
-    res[i++] = info_erasmus;
-  }
-  rs.close();
-  stmt.close();
-  return res;
+function getUnnotifiedPeersInfo() {
+  var options = {
+    headers: {
+      'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
+    }
+  };
+  var response = UrlFetchApp.fetch(API_SERVER + "/api/peers/" + CURRENT_SEMESTER_ID + "/unnotified", options);
+  return JSON.parse(response);
 }
 
-function getUnnotifiedPeersInfo(conn) {
-  var stmt = conn.prepareStatement(
-    "select PEER.id as peer_id, peer.email as peer_email, peer.name as peer_name, peer.surname as peer_surname, " +
-      "erasmus.name as erasmus_name, erasmus.surname as erasmus_surname, COUNTRY.country_name as erasmus_nacionality, " +
-      "erasmus.email as erasmus_email, STUDIES.name as erasmus_studies, FACULTY.name as erasmus_faculty, " +
-      "ERASMUS.arrival_date as erasmus_arrival_date, ERASMUS.notes as erasmus_notes " +
-    "from PEER " +
-    "inner join STUDENT as peer on PEER.peer = peer.id " +
-    "inner join BUDDY_PAIR on PEER.id = BUDDY_PAIR.peer " +
-    "inner join ERASMUS on BUDDY_PAIR.erasmus = ERASMUS.id " +
-    "inner join STUDENT as erasmus on ERASMUS.erasmus = erasmus.id " +
-    "inner join COUNTRY on erasmus.nacionality = COUNTRY.country_code " +
-    "left join STUDIES on erasmus.studies = STUDIES.id " +
-    "left join FACULTY on erasmus.faculty = FACULTY.id " +
-    "where PEER.course_year = " + CURRENT_COURSE_YEAR + " and not BUDDY_PAIR.notified_peer");
-  var rs = stmt.executeQuery();
-  var res = [];
-  var i = 0;
-  while(rs.next()) {
-    // NOTA: para tutores que tengan > 1 Erasmus asignados, se devuelven en varias
-    // entradas del array y hay que gestionarlo más adelante manualmente
-    var info_peer = {
-      peer_id: rs.getInt("peer_id"),
-      peer_email: rs.getString("peer_email"),
-      peer_name: rs.getString("peer_name"),
-      peer_surname: rs.getString("peer_surname"),
-      erasmus_name: rs.getString("erasmus_name"),
-      erasmus_surname: rs.getString("erasmus_surname"),
-      erasmus_nacionality: rs.getString("erasmus_nacionality"),
-      erasmus_email: rs.getString("erasmus_email"),
-      erasmus_studies: rs.getString("erasmus_studies") != null ? rs.getString("erasmus_studies") : "-",
-      erasmus_faculty: rs.getString("erasmus_faculty") != null ? rs.getString("erasmus_faculty") : "-",
-      erasmus_arrival_date: rs.getTime("erasmus_arrival_date") != null ? rs.getTime("erasmus_arrival_date") : "-",
-      erasmus_notes: rs.getString("erasmus_notes") != null ? rs.getString("erasmus_notes") : "-"
-    };
-    res[i++] = info_peer;
-  }
-  rs.close();
-  stmt.close();
-  return res;
-}
-
-function notifyErasmus(conn, unnotified) {
+function notifyErasmus(unnotified) {
   var SUBJECT = "AEGEE-Zaragoza - Buddy Pair";
   var OPTIONS = {
     from: "erasmus@aegee-zaragoza.org",
@@ -128,21 +57,27 @@ function notifyErasmus(conn, unnotified) {
       "\nErasmus Team - AEGEE-Zaragoza\n" +
       "C/Corona de Aragón 42 (Casa del Estudiante)\n" +
       "Email: erasmus@aegee-zaragoza.org";
-    GmailApp.sendEmail(recipient, SUBJECT, body, OPTIONS);
-    notified.push(unnotified[i].erasmus_id);
+    try {
+      GmailApp.sendEmail(recipient, SUBJECT, body, OPTIONS);
+      notified.push(unnotified[i].erasmus_id);
+    } catch (e) {
+      // TODO: handle
+    }
   }
   if(notified.length > 0) {
-    var sql = "update BUDDY_PAIR set notified_erasmus = true where ";
-    for(var i = 0; i < notified.length; i++) {
-      sql += i < notified.length-1 ? "erasmus = " + notified[i] + " or " : "erasmus = " + notified[i];
-    }
-    var stmt = conn.prepareStatement(sql);
-    stmt.executeUpdate();
-    stmt.close();
+    var options = {
+      method: 'PUT',
+      headers: {
+        'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
+      }
+    };
+    notified.forEach(function(id) {
+      UrlFetchApp.fetch(API_SERVER + "/api/erasmus/" + id + "/notify", options);
+    });
   }
 }
 
-function notifyPeers(conn, unnotified) {
+function notifyPeers(unnotified) {
   var SUBJECT = "AEGEE-Zaragoza - Buddy Pair";
   var BODY_PEER_EMAIL_HEADER = 
       "Se te han asignado los siguientes estudiantes Erasmus:\n";
@@ -188,24 +123,30 @@ function notifyPeers(conn, unnotified) {
         }
       }
       body += BODY_PEER_EMAIL_FOOTER;
-      GmailApp.sendEmail(recipient, SUBJECT, body, OPTIONS);
-      notified.push(unnotified[i].peer_id);
+      try {
+        GmailApp.sendEmail(recipient, SUBJECT, body, OPTIONS);
+        notified.push(unnotified[i].peer_id);
+      } catch (e) {
+        // TODO: handle
+      }
     }
   }
   if(notified.length > 0) {
-    var sql = "update BUDDY_PAIR set notified_peer = true where ";
-    for(var i = 0; i < notified.length; i++) {
-      sql += i < notified.length-1 ? "peer = " + notified[i] + " or " : "peer = " + notified[i];
-    }
-    var stmt = conn.prepareStatement(sql);
-    stmt.executeUpdate();
-    stmt.close();
+    var options = {
+      method: 'PUT',
+      headers: {
+        'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
+      }
+    };
+    notified.forEach(function(id) {
+      UrlFetchApp.fetch(API_SERVER + "/api/peer/" + id + "/notify", options);
+    });
   }
 }
 
 function emparejar() {
-  var unnotified = getUnnotifiedErasmusInfo(connection);
-  notifyErasmus(connection, unnotified);
-  unnotified = getUnnotifiedPeersInfo(connection);
-  notifyPeers(connection, unnotified);
+  var unnotified = getUnnotifiedErasmusInfo();
+  notifyErasmus(unnotified);
+  unnotified = getUnnotifiedPeersInfo();
+  notifyPeers(unnotified);
 }
