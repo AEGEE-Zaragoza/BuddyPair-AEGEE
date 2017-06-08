@@ -144,7 +144,7 @@ function notifyPeers(unnotified) {
   }
 }
 
-function emparejar() {
+function notify() {
   var unnotified = getUnnotifiedErasmusInfo();
   notifyErasmus(unnotified);
   unnotified = getUnnotifiedPeersInfo();
