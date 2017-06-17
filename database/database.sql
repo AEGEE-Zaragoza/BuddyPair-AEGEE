@@ -61,6 +61,7 @@ create table ERASMUS (
     notes varchar(1024),
     foreign key (semester_id) references SEMESTER(id),
     foreign key (erasmus) references STUDENT(id)
+        on update cascade
         on delete cascade
 );
 
@@ -80,6 +81,7 @@ create table PEER (
     speaks_english boolean not null default FALSE,
     foreign key (semester_id) references SEMESTER(id),
     foreign key (peer) references STUDENT(id)
+        on update cascade
         on delete cascade,
     foreign key (nationality_preference) references COUNTRY(country_code)
 );
@@ -90,7 +92,9 @@ create table BUDDY_PAIR (
     notified_erasmus boolean not null default false,
     notified_peer boolean not null default false,
     foreign key (erasmus) references ERASMUS(id)
+        on update cascade
         on delete cascade,
     foreign key (peer) references PEER(id)
+        on update cascade
         on delete cascade
 );
