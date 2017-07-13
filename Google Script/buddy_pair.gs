@@ -62,6 +62,7 @@ function notifyErasmus(unnotified) {
       notified.push(unnotified[i].erasmus_id);
     } catch (e) {
       // TODO: handle
+      Logger.log(e);
     }
   }
   if(notified.length > 0) {
@@ -107,18 +108,18 @@ function notifyPeers(unnotified) {
       var body = BODY_PEER_EMAIL_HEADER;
       body += 
         "\nNombre: " + unnotified[i].erasmus_name + " " + unnotified[i].erasmus_surname + "\n" +
-        "Nacionalidad: " + unnotified[i].erasmus_nacionality + "\n" +
+        "Nacionalidad: " + unnotified[i].erasmus_nationality + "\n" +
         "Facultad: " + unnotified[i].erasmus_faculty + "\n" +
         "Estudios: " + unnotified[i].erasmus_studies + "\n" +
         "Email: " + unnotified[i].erasmus_email + "\n";
       for(var j = i+1; j < unnotified.length; j++) {
         if(unnotified[j] != null && unnotified[j].peer_email == unnotified[i].peer_email) {
           body += 
-            "\nNombre: " + unnotified[i].erasmus_name + " " + unnotified[i].erasmus_surname + "\n" +
-            "Nacionalidad: " + unnotified[i].erasmus_nacionality + "\n" +
-            "Facultad: " + unnotified[i].erasmus_faculty + "\n" +
-            "Estudios: " + unnotified[i].erasmus_studies + "\n" +
-            "Email: " + unnotified[i].erasmus_email + "\n";
+            "\nNombre: " + unnotified[j].erasmus_name + " " + unnotified[j].erasmus_surname + "\n" +
+            "Nacionalidad: " + unnotified[j].erasmus_nationality + "\n" +
+            "Facultad: " + unnotified[j].erasmus_faculty + "\n" +
+            "Estudios: " + unnotified[j].erasmus_studies + "\n" +
+            "Email: " + unnotified[j].erasmus_email + "\n";
           unnotified[j] = null;
         }
       }
@@ -128,6 +129,7 @@ function notifyPeers(unnotified) {
         notified.push(unnotified[i].peer_id);
       } catch (e) {
         // TODO: handle
+        Logger.log(e);
       }
     }
   }
