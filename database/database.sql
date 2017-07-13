@@ -62,7 +62,8 @@ create table ERASMUS (
     foreign key (semester_id) references SEMESTER(id),
     foreign key (erasmus) references STUDENT(id)
         on update cascade
-        on delete cascade
+        on delete cascade,
+    unique key unque_erasmus (semester_id, erasmus)
 );
 
 create table PEER (
@@ -83,7 +84,8 @@ create table PEER (
     foreign key (peer) references STUDENT(id)
         on update cascade
         on delete cascade,
-    foreign key (nationality_preference) references COUNTRY(country_code)
+    foreign key (nationality_preference) references COUNTRY(country_code),
+    unique key unique_peer (semester_id, peer)
 );
 
 create table BUDDY_PAIR (
