@@ -40,7 +40,7 @@ function dumpResponse(response, form) {
     notes: response.getResponseForItem(form.getItemById(NOTES_ID)).getResponse(),
     aegee_member: response.getResponseForItem(form.getItemById(MEMBER_ID)).getResponse() == "Sí" ? true : false,
     nia: response.getResponseForItem(form.getItemById(NIA_ID)) != null ? response.getResponseForItem(form.getItemById(NIA_ID)).getResponse() : null,
-    speaks_english: response.getResponseForItem(form.getItemById(ENGLISH_ID)).getResponse == "Sí" ? true : false,
+    speaks_english: response.getResponseForItem(form.getItemById(ENGLISH_ID)).getResponse() == "Sí" ? true : false,
     notifications: response.getResponseForItem(form.getItemById(NOTIFICATIONS_ID)).getResponse() == "Sí" ? true : false
   };
   var options = {
