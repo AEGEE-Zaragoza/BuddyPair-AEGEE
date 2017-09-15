@@ -59,3 +59,13 @@ function dumpAllResponses() {
     dumpResponse(r, form);
   });
 }
+
+function dumpLastNResponses() {
+  var N = 1;
+  var form = FormApp.getActiveForm();
+  var responses = form.getResponses();
+  while (N > 0) {
+    var r = responses[responses.length - N--];
+    dumpResponse(r, form);
+  }
+}
