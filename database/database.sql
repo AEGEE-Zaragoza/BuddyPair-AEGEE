@@ -9,7 +9,8 @@ drop table if exists SEMESTER;
 
 create table COUNTRY (
     country_code varchar(2) primary key,
-    country_name varchar(125) unique not null
+    country_name varchar(125) unique not null,
+    country_code_iso3166_1 varchar(3)
 );
 
 create table STUDIES (
