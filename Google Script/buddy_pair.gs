@@ -1,5 +1,3 @@
-var CURRENT_SEMESTER_ID = 201701;
-
 var API_SERVER = "https://buddypair.aegee-zaragoza.org";
 var API_AUTH_TOKEN = "";
 
@@ -9,7 +7,7 @@ function getUnnotifiedErasmusInfo() {
       'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
     }
   };
-  var response = UrlFetchApp.fetch(API_SERVER + "/api/erasmuses/" + CURRENT_SEMESTER_ID + "/unnotified", options);
+  var response = UrlFetchApp.fetch(API_SERVER + "/api/erasmuses/unnotified", options);
   return JSON.parse(response);
 }
 
@@ -19,7 +17,7 @@ function getUnnotifiedPeersInfo() {
       'Authorization': Utilities.base64Encode(API_AUTH_TOKEN, Utilities.Charset.UTF_8)
     }
   };
-  var response = UrlFetchApp.fetch(API_SERVER + "/api/peers/" + CURRENT_SEMESTER_ID + "/unnotified", options);
+  var response = UrlFetchApp.fetch(API_SERVER + "/api/peers/unnotified", options);
   return JSON.parse(response);
 }
 
