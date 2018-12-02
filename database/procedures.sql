@@ -36,7 +36,7 @@ CREATE PROCEDURE emparejar(IN _semester_id INT) BEGIN
         ORDER BY register_date ASC;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET _done_erasmus := TRUE;
 
-    DROP TABLE IF EXISTS PESOS;
+    DROP TABLE IF EXISTS RANKS;
     CREATE TEMPORARY TABLE RANKS (
         rank INT DEFAULT 0)
         SELECT PEER.id AS peer_id, COUNT(BUDDY_PAIR.peer) AS assigned_erasmus
@@ -112,7 +112,12 @@ CREATE PROCEDURE emparejar(IN _semester_id INT) BEGIN
           INNER JOIN PEER ON RANKS.peer_id = PEER.id
         WHERE RANKS.assigned_erasmus < PEER.erasmus_limit;
         IF (_best_rank IS NOT NULL) THEN
-          SELECT peer_id INTO _best_peer_id FROM RANKS WHERE rank = _best_rank LIMIT 1;
+          SELECT RANKS.peer_id
+          INTO _best_peer_id
+          FROM RANKS
+            INNER JOIN PEER ON RANKS.peer_id = PEER.id
+          WHERE RANKS.rank = _best_rank AND RANKS.assigned_erasmus < PEER.erasmus_limit
+          LIMIT 1;
           CALL emparejar_estudiantes(_erasmus_id, _best_peer_id);
           UPDATE RANKS SET assigned_erasmus = assigned_erasmus + 1 WHERE peer_id = _best_peer_id;
         END IF;
