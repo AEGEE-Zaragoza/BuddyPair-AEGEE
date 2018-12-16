@@ -44,6 +44,7 @@ create table STUDENT (
     phone varchar(16),
     studies int,
     faculty int,
+    notifications boolean not null default FALSE,
     foreign key (nationality) references COUNTRY(country_code),
     foreign key (studies) references STUDIES(id),
     foreign key (faculty) references FACULTY(id)
