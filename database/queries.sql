@@ -120,8 +120,8 @@ on STUDENT.id = PEER.peer
 inner join ERASMUS
 on STUDENT.id = ERASMUS.erasmus;
 
--- Información de todos los tutores a los que se les ha asignado algún Erasmus (últil para enviar a RRII)
-select STUDENT.name as name, STUDENT.surname as surname, STUDENT.email as email
+-- Información de todos los tutores a los que se les ha asignado algún Erasmus (útil para enviar a RRII)
+select STUDENT.name as name, STUDENT.surname as surname, STUDENT.email as email, PEER.nia as NIA
 from STUDENT
 inner join PEER
 on STUDENT.id = PEER.peer
