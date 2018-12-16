@@ -239,7 +239,8 @@ insert into COUNTRY values
     ('YE', 'Yemen', 'YEM'),
     ('YU', 'Yugoslavia', NULL),
     ('ZR', 'Zaire', NULL),
-    ('ZM', 'Zambia', 'ZMB');
+    ('ZM', 'Zambia', 'ZMB'),
+    ('ZW', 'Zimbabue', 'ZWE');
 
 insert into STUDIES (name) values
     ('Medicine / Nursing'),
